@@ -1,17 +1,16 @@
 const { Router } = require("express");
 
+const {
+  createCart,
+  getCartById,
+  addProductToCart,
+} = require("../controllers/carts.controller");
+
 const router = Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    res.json({
-      status: "success",
-      message: "Carts router is working",
-      payload: [],
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.post("/", createCart);
+router.get("/:cid", getCartById);
+
+router.post("/:cid/products/:pid", addProductToCart);
 
 module.exports = router;
