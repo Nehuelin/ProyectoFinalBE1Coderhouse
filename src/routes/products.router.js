@@ -6,7 +6,7 @@ router.get("/", async (req, res, next) => {
   try {
     res.json({
       status: "success",
-      message: "Carts router is working",
+      message: "Products router is working",
       payload: [],
     });
   } catch (error) {
