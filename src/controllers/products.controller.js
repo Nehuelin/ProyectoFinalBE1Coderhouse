@@ -251,8 +251,102 @@ async function createProduct(req, res, next) {
   }
 }
 
+
+async function updateProduct(req, res, next) {
+  try {
+    const { pid } = req.params;
+
+    if (
+      Object.prototype.hasOwnProperty.call(req.body, "_id") ||
+      Object.prototype.hasOwnProperty.call(req.body, "id")
+    ) {
+      const error = new Error(
+        "Product ID cannot be modified"
+      );
+
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (Object.keys(req.body).length === 0) {
+      const error = new Error(
+        "At least one field must be provided"
+      );
+
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const allowedFields = [
+      "title",
+      "description",
+      "code",
+      "price",
+      "status",
+      "stock",
+      "category",
+      "thumbnails",
+    ];
+
+    const invalidFields = Object.keys(req.body).filter(
+      (field) => !allowedFields.includes(field)
+    );
+
+    if (invalidFields.length > 0) {
+      const error = new Error(
+        `Fields cannot be modified: ${invalidFields.join(", ")}`
+      );
+
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const updatedProduct =
+      await productDAO.updateProduct(pid, req.body);
+
+    if (!updatedProduct) {
+      const error = new Error("Product not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product updated successfully",
+      payload: updatedProduct,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function deleteProduct(req, res, next) {
+  try {
+    const { pid } = req.params;
+
+    const deletedProduct =
+      await productDAO.deleteProduct(pid);
+
+    if (!deletedProduct) {
+      const error = new Error("Product not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product deleted successfully",
+      payload: deletedProduct,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
 	getProducts,
 	getProductById,
   createProduct,
+	updateProduct,
+	deleteProduct
 };
