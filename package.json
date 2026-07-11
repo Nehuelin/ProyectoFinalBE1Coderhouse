@@ -1,0 +1,31 @@
+{
+  "name": "proyectofinalbe1coderhouse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nehuelin/ProyectoFinalBE1Coderhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nehuelin/ProyectoFinalBE1Coderhouse/issues"
+  },
+  "homepage": "https://github.com/Nehuelin/ProyectoFinalBE1Coderhouse#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.1",
+    "mongoose": "^9.7.4",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
