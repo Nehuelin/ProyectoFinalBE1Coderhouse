@@ -6,25 +6,23 @@ const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const errorHandler = require("./middleware/errorHandler");
+const connectDatabase = require("./config/database");
 
 dotenv.config();
+connectDatabase();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
-// Middlewares generales
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Archivos públicos: CSS, JavaScript e imágenes
 app.use(express.static(path.join(__dirname, "public")));
 
-// Rutas
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 
-// Ruta no encontrada
 app.use((req, res) => {
   res.status(404).json({
     status: "error",
@@ -32,7 +30,6 @@ app.use((req, res) => {
   });
 });
 
-// Middleware central de errores
 app.use(errorHandler);
 
 app.listen(PORT, () => {

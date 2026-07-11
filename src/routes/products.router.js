@@ -1,17 +1,15 @@
 const { Router } = require("express");
 
+const {
+	getProducts,
+	getProductById,
+  createProduct,
+} = require("../controllers/products.controller");
+
 const router = Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    res.json({
-      status: "success",
-      message: "Products router is working",
-      payload: [],
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", getProducts);
+router.get("/:pid", getProductById);
+router.post("/", createProduct);
 
 module.exports = router;
