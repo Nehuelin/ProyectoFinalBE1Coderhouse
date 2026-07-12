@@ -161,6 +161,36 @@ class CartMongoDAO {
       throw error;
     }
   }
+
+	async validateProductsExist(products) {
+		const productIds = products.map(
+			(item) => item.product
+		);
+
+		productIds.forEach((productId) => {
+			this.validateObjectId(productId, "product");
+		});
+
+		const existingProducts =
+			await ProductModel.countDocuments({
+				_id: {
+					$in: productIds,
+				},
+			});
+
+		if (existingProducts !== productIds.length) {
+			const error = new Error(
+				"One or more products do not exist"
+			);
+
+			error.statusCode = 404;
+			throw error;
+		}
+	}
 }
+
+
+
+
 
 module.exports = CartMongoDAO;
