@@ -480,3 +480,18 @@ a {
     min-height: 320px;
   }
 }
+
+.realtime-message {
+  display: none;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  color: #1e478f;
+  background-color: #e7f0ff;
+  border: 1px solid #b9d2ff;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.realtime-message-visible {
+  display: block;
+}
