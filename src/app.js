@@ -8,10 +8,13 @@ const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const errorHandler = require("./middleware/errorHandler");
 const connectDatabase = require("./config/database");
+const http = require("node:http");
 
 dotenv.config();
+const {initializeSocket} = require("./config/socket");
 
 const app = express();
+const httpServer = http.createServer(app);
 const PORT = process.env.PORT;
 
 app.engine(
@@ -46,7 +49,9 @@ async function startServer() {
   try {
     await connectDatabase();
 
-    app.listen(PORT, () => {
+    initializeSocket(httpServer);
+
+    httpServer.listen(PORT, () => {
       console.log(
         `Server running at http://localhost:${PORT}`
       );
@@ -63,4 +68,4 @@ async function startServer() {
 
 startServer();
 
-module.exports = app;
+module.exports = app, httpServer;

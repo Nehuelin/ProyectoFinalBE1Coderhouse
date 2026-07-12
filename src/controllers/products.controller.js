@@ -1,4 +1,5 @@
 const ProductMongoDAO = require("../dao/db/ProductMongoDAO");
+const {getIO} = require("../config/socket");
 
 const productDAO = new ProductMongoDAO();
 
@@ -241,6 +242,8 @@ async function createProduct(req, res, next) {
       thumbnails,
     });
 
+    emitProductUpdate("created", newProduct);
+
     return res.status(201).json({
       status: "success",
       message: "Producto creado exitosamente",
@@ -301,14 +304,15 @@ async function updateProduct(req, res, next) {
       throw error;
     }
 
-    const updatedProduct =
-      await productDAO.updateProduct(pid, req.body);
+    const updatedProduct = await productDAO.updateProduct(pid, req.body);
 
     if (!updatedProduct) {
       const error = new Error("Product not found");
       error.statusCode = 404;
       throw error;
     }
+    
+    emitProductUpdate("updated", updatedProduct);
 
     return res.status(200).json({
       status: "success",
@@ -333,6 +337,8 @@ async function deleteProduct(req, res, next) {
       throw error;
     }
 
+    emitProductUpdate("deleted", deletedProduct);
+
     return res.status(200).json({
       status: "success",
       message: "Product deleted successfully",
@@ -341,6 +347,17 @@ async function deleteProduct(req, res, next) {
   } catch (error) {
     return next(error);
   }
+}
+
+function emitProductUpdate(
+  action,
+  product
+) {
+  getIO().emit("productsUpdated", {
+    action,
+    product,
+    productId: product._id.toString(),
+  });
 }
 
 module.exports = {
