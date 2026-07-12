@@ -1,0 +1,139 @@
+<section
+  class="cart-page"
+  data-cart-id="{{cartId}}"
+>
+  <div class="cart-heading">
+    <div>
+      <p class="eyebrow">Tu compra</p>
+      <h1>Carrito</h1>
+
+      <p class="cart-id">
+        ID: {{cartId}}
+      </p>
+    </div>
+
+    {{#if hasProducts}}
+      <button
+        id="clear-cart-button"
+        class="danger-button"
+        type="button"
+      >
+        Vaciar carrito
+      </button>
+    {{/if}}
+  </div>
+
+  <div
+    id="cart-message"
+    class="cart-message"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  {{#if hasProducts}}
+    <div class="cart-layout">
+      <div class="cart-products">
+        {{#each products}}
+          <article
+            class="cart-item"
+            data-product-id="{{product._id}}"
+          >
+            <div class="cart-item-image">
+              {{#if product.thumbnails.length}}
+                <img
+                  src="{{product.thumbnails.[0]}}"
+                  alt="{{product.title}}"
+                />
+              {{else}}
+                <span>Sin imagen</span>
+              {{/if}}
+            </div>
+
+            <div class="cart-item-information">
+              <span class="category">
+                {{product.category}}
+              </span>
+
+              <h2>{{product.title}}</h2>
+
+              <p>
+                Precio unitario:
+                <strong>{{formattedPrice}}</strong>
+              </p>
+
+              <div class="quantity-control">
+                <label
+                  for="quantity-{{product._id}}"
+                >
+                  Cantidad
+                </label>
+
+                <input
+                  id="quantity-{{product._id}}"
+                  class="quantity-input"
+                  type="number"
+                  min="1"
+                  step="1"
+                  value="{{quantity}}"
+                />
+
+                <button
+                  class="update-quantity-button"
+                  type="button"
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+
+            <div class="cart-item-actions">
+              <p>Subtotal</p>
+
+              <strong>
+                {{formattedSubtotal}}
+              </strong>
+
+              <button
+                class="remove-product-button"
+                type="button"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        {{/each}}
+      </div>
+
+      <aside class="cart-summary">
+        <h2>Resumen</h2>
+
+        <div class="summary-row">
+          <span>Total</span>
+          <strong>{{formattedTotal}}</strong>
+        </div>
+
+        <button
+          class="button checkout-button"
+          type="button"
+          disabled
+        >
+          Finalizar compra
+        </button>
+      </aside>
+    </div>
+  {{else}}
+    <div class="empty-state">
+      <h2>Tu carrito está vacío</h2>
+
+      <p>
+        Agregá productos para comenzar tu compra.
+      </p>
+
+      <a class="button" href="/products">
+        Ver productos
+      </a>
+    </div>
+  {{/if}}
+</section>
+
+<script src="/js/cart.js"></script>

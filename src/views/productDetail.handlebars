@@ -1,0 +1,109 @@
+<section
+  class="product-detail-page"
+  data-product-id="{{product._id}}"
+>
+  <a class="back-link" href="/products">
+    ← Volver a productos
+  </a>
+
+  <div class="product-detail">
+    <div class="product-detail-image">
+      {{#if product.mainThumbnail}}
+        <img
+          src="{{product.mainThumbnail}}"
+          alt="{{product.title}}"
+        />
+      {{else}}
+        <span>Sin imagen disponible</span>
+      {{/if}}
+    </div>
+
+    <div class="product-detail-content">
+      <div class="product-meta">
+        <span class="category">
+          {{product.category}}
+        </span>
+
+        {{#if product.isAvailable}}
+          <span class="status available">
+            {{product.availabilityText}}
+          </span>
+        {{else}}
+          <span class="status unavailable">
+            {{product.availabilityText}}
+          </span>
+        {{/if}}
+      </div>
+
+      <h1>{{product.title}}</h1>
+
+      <p class="product-code">
+        Código: {{product.code}}
+      </p>
+
+      <p class="detail-description">
+        {{product.description}}
+      </p>
+
+      <p class="detail-price">
+        {{product.formattedPrice}}
+      </p>
+
+      <div class="detail-information">
+        <div>
+          <span>Stock</span>
+          <strong>{{product.stock}} unidades</strong>
+        </div>
+
+        <div>
+          <span>Estado</span>
+          <strong>
+            {{product.availabilityText}}
+          </strong>
+        </div>
+      </div>
+
+      {{#if product.isAvailable}}
+        <form
+          id="add-to-cart-form"
+          class="add-to-cart-form"
+        >
+          <div class="form-field">
+            <label for="cart-id">
+              ID del carrito
+            </label>
+
+            <input
+              id="cart-id"
+              name="cartId"
+              type="text"
+              placeholder="Pegá el ID del carrito"
+              required
+            />
+          </div>
+
+          <button class="button" type="submit">
+            Agregar al carrito
+          </button>
+        </form>
+      {{else}}
+        <button
+          class="button disabled-button"
+          type="button"
+          disabled
+        >
+          Producto no disponible
+        </button>
+      {{/if}}
+
+      <div
+        id="cart-message"
+        class="cart-message"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/productDetail.js"></script>
